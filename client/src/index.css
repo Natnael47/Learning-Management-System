@@ -9,6 +9,8 @@
   --text-course-details-heading-large: 36px;
   --text-course-details-heading-medium: 28px;
   --text-course-details-heading-small: 26px;
+
+  --grid-cols-auto: repeat(auto-fit, minmax(200px, 1fr));
 }
 
 * {
