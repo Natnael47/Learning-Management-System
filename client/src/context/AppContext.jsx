@@ -1,3 +1,4 @@
+import humanizeDuration from 'humanize-duration';
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { dummyCourses } from "../assets/assets";
@@ -33,11 +34,56 @@ export const AppContextProvider = (props) => {
         return totalRating / course.courseRatings.length;
     }
 
+    //Function to calculate course chapter time
+    const calculateChapterTime = (chapter) => {
+        let time = 0;
+        chapter.chapterContent.map((lecture) => time += lecture.lectureDuration);
+        return humanizeDuration(time * 60 * 1000, { units: ["h", "m"] });
+    }
+
+    //Function to calculate course duration
+    const calculateCourseDuration = (course) => {
+        let time = 0;
+        course.courseContent.map((chapter) => chapter.chapterContent.map((lecture) => time += lecture.lectureDuration));
+        return humanizeDuration(time * 60 * 1000, { units: ["h", "m"] });
+    }
+
+    //Function to calculate number of lecture
+    const calculateNoOfLectures = (course) => {
+        let totalLectures = 0;
+        course.courseContent.forEach(chapter => {
+            if (Array.isArray(chapter.chapterContent)) {
+                totalLectures += chapter.chapterContent.length
+            }
+        });
+        return totalLectures;
+    }
+
+    //Function to check if user is authenticated
+    const isAuthenticated = (user) => {
+        return user.token !== null;
+    }
+
+    //Function to log out use
+
+    //Function to check if user is educator
+    const checkEducator = (user) => {
+        return user.roles.includes('educator');
+    }
+
+    //Function to toggle educator mode
+    const toggleEducatorMode = () => {
+        setIsEducator(!isEducator);
+    }
+
+    //Function to scroll to top
+
     const value = {
         Currency, navigate,
         allCourses,
         fetchAllCourses, calculateRating,
-        isEducator, setIsEducator
+        isEducator, setIsEducator,
+        calculateChapterTime, calculateCourseDuration, calculateNoOfLectures
     }
     return (
         <AppContext.Provider value={value}>
