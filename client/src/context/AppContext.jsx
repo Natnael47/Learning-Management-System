@@ -12,6 +12,7 @@ export const AppContextProvider = (props) => {
 
     const [allCourses, setAllCourses] = useState([]);
     const [isEducator, setIsEducator] = useState(true);
+    const [enrolledCourse, setEnrolledCourse] = useState([]);
 
     // Set all courses
     const fetchAllCourses = async () => {
@@ -20,6 +21,7 @@ export const AppContextProvider = (props) => {
 
     useEffect(() => {
         fetchAllCourses();
+        fetchUserEnrolledCourses();
     }, [])
 
     //function to calculate average rating for all courses
@@ -76,14 +78,35 @@ export const AppContextProvider = (props) => {
         setIsEducator(!isEducator);
     }
 
-    //Function to scroll to top
+    //Function to fetch user enrollment
+    const fetchUserEnrolledCourses = async () => {
+        setEnrolledCourse(dummyCourses);
+    }
+
+    //Function to enroll course
+    const enrollCourse = async (course, user) => {
+        // Implement enroll course logic here
+        setEnrolledCourse([...enrolledCourse, course]);
+    }
+
+    //Function to unenroll course
+    const unenrollCourse = async (course, user) => {
+        // Implement unenroll course logic here
+        setEnrolledCourse(enrolledCourse.filter(c => c.id !== course.id));
+    }
+
+    //Function to calculate total course price
+    const calculateTotalCoursePrice = (course) => {
+        return course.coursePrice * (1 + course.discount / 100);
+    }
 
     const value = {
         Currency, navigate,
         allCourses,
         fetchAllCourses, calculateRating,
         isEducator, setIsEducator,
-        calculateChapterTime, calculateCourseDuration, calculateNoOfLectures
+        calculateChapterTime, calculateCourseDuration, calculateNoOfLectures,
+        fetchUserEnrolledCourses, enrolledCourse
     }
     return (
         <AppContext.Provider value={value}>
