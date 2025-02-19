@@ -1,4 +1,6 @@
+import { Line } from 'rc-progress'
 import React, { useContext, useState } from 'react'
+import Footer from '../../componentes/student/Footer'
 import { AppContext } from '../../context/AppContext'
 
 const MyEnrollments = () => {
@@ -42,6 +44,7 @@ const MyEnrollments = () => {
                                     <img src={course.courseThumbnail} alt="" className='w-14 sm:w-24 md:w-28' />
                                     <div className='flex-1'>
                                         <p className='mb-1 max-sm:text-sm'>{course.courseTitle}</p>
+                                        <Line strokeWidth={2} percent={progressArray[index] ? (progressArray[index].lectureCompleted * 100) / progressArray[index].totalLectures : 0} className='bg-gray-300 rounded-full' />
                                     </div>
                                 </td>
                                 <td className='px-4 py-3 max-sm:hidden'>
@@ -59,6 +62,7 @@ const MyEnrollments = () => {
                     </tbody>
                 </table>
             </div>
+            <Footer />
         </>
 
     )
