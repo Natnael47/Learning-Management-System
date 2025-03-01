@@ -1,7 +1,9 @@
 import humanizeDuration from 'humanize-duration';
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import YouTube from 'react-youtube';
 import { assets } from '../../assets/assets';
+import Footer from '../../componentes/student/Footer';
 import { AppContext } from '../../context/AppContext';
 
 const Player = () => {
@@ -65,12 +67,24 @@ const Player = () => {
                             </div>
                         ))}
                     </div>
+                    <div className='flex items-center gap-2 py-3 mt-10'>
+                        <h1 className='text-xl font-bold'>Rate this Course:</h1>
+                    </div>
                 </div>
                 {/* right column */}
-                <div>
-
+                <div className='md:mt-10'>
+                    {playerData ? (<div>
+                        <YouTube videoId={playerData.lectureUrl.split('/').pop()} iframeClassName='w-full aspect-video' />
+                        <div className='flex justify-between items-center mt-1'>
+                            <p>{playerData.chapter}.{playerData.lecture} {playerData.lectureTitle}</p>
+                            <button className='text-blue-600'>{false ? 'completed' : 'mark complete'}</button>
+                        </div>
+                    </div>) :
+                        <img src={courseData ? courseData.courseThumbnail : ''} alt="" />
+                    }
                 </div>
             </div>
+            <Footer />
         </>
     )
 }
